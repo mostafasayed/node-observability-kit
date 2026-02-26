@@ -20,6 +20,7 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build": "npm run build:cjs && npm run build:esm",
     "dev": "tsx watch src/index.ts",
+    "dev:example": "tsx watch examples/dev-test.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
