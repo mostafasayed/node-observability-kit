@@ -1,14 +1,24 @@
 import express from "express";
-import { createLogger, expressCorrelationMiddleware } from "../src/index.js";
+import {
+    createLogger,
+    expressCorrelationMiddleware,
+    expressRequestTimingMiddleware,
+} from "../src/index.js";
 
 const app = express();
 const logger = createLogger();
 
 app.use(expressCorrelationMiddleware(logger));
+app.use(expressRequestTimingMiddleware({ slowThresholdMs: 300 }));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     req.log?.info("Handling root request");
     res.json({ requestId: req.requestId });
+});
+
+app.get("/slow", async (req, res) => {
+    await new Promise((r) => setTimeout(r, 500));
+    res.json({ requestId: req.requestId, slow: true });
 });
 
 app.listen(3000, () => {

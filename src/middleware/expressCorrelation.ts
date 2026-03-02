@@ -2,13 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { resolveRequestId, CorrelationOptions } from "../core/correlation.js";
 import { ObservabilityLogger } from "../logger/createLogger.js";
 
-declare module "express-serve-static-core" {
-    interface Request {
-        requestId?: string;
-        log?: ObservabilityLogger;
-    }
-}
-
 export function expressCorrelationMiddleware(
     logger: ObservabilityLogger,
     options?: CorrelationOptions
