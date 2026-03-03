@@ -1,7 +1,9 @@
 import express from "express";
 import {
+    AppError,
     createLogger,
     expressCorrelationMiddleware,
+    expressErrorHandler,
     expressRequestTimingMiddleware,
 } from "../src/index.js";
 
@@ -20,6 +22,21 @@ app.get("/slow", async (req, res) => {
     await new Promise((r) => setTimeout(r, 500));
     res.json({ requestId: req.requestId, slow: true });
 });
+
+app.get("/bad", () => {
+    throw new AppError({
+        code: "BAD_REQUEST",
+        message: "Invalid input",
+        statusCode: 400,
+        details: { field: "name" },
+    });
+});
+
+app.get("/boom", () => {
+    throw new Error("Unexpected crash");
+});
+
+app.use(expressErrorHandler());
 
 app.listen(3000, () => {
     logger.info("Server running on port 3000");
