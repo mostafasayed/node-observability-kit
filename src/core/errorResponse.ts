@@ -1,4 +1,4 @@
-import { AppError, isAppError } from "./errors.js";
+import { isAppError } from "./errors.js";
 
 export interface ErrorResponse {
     success: false;
