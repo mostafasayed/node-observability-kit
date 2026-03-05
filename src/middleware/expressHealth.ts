@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { runHealthChecks, HealthOptions } from "../core/health.js";
+import { runHealthChecks, HealthOptions } from "../health/health.js";
 
 export function expressHealthHandler() {
     return function (_req: Request, res: Response) {
