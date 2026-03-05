@@ -4,6 +4,8 @@ import {
     createLogger,
     expressCorrelationMiddleware,
     expressErrorHandler,
+    expressHealthHandler,
+    expressReadinessHandler,
     expressRequestTimingMiddleware,
 } from "../src/index.js";
 
@@ -12,6 +14,21 @@ const logger = createLogger();
 
 app.use(expressCorrelationMiddleware(logger));
 app.use(expressRequestTimingMiddleware({ slowThresholdMs: 300 }));
+app.use(expressRequestTimingMiddleware({ slowThresholdMs: 300 }));
+
+app.get("/health", expressHealthHandler());
+app.get(
+    "/ready",
+    expressReadinessHandler({
+        checks: {
+            database: async () => {
+                // simulate DB check
+                return;
+            },
+        },
+    })
+);
+
 
 app.get("/", async (req, res) => {
     req.log?.info("Handling root request");
