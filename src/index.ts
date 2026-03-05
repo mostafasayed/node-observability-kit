@@ -6,4 +6,7 @@ export { expressErrorHandler } from "./middleware/expressErrorHandler.js";
 
 export { expressHealthHandler, expressReadinessHandler } from "./middleware/expressHealth.js";
 
+export { setupGracefulShutdown } from "./lifecycle/gracefulShutdown.js";
+
+
 export { AppError } from "./core/errors.js";

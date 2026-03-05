@@ -7,6 +7,7 @@ import {
     expressHealthHandler,
     expressReadinessHandler,
     expressRequestTimingMiddleware,
+    setupGracefulShutdown,
 } from "../src/index.js";
 
 const app = express();
@@ -55,6 +56,14 @@ app.get("/boom", () => {
 
 app.use(expressErrorHandler());
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
     logger.info("Server running on port 3000");
+});
+
+setupGracefulShutdown({
+    server,
+    logger,
+    onShutdown: async () => {
+        logger.info("Cleaning resources...");
+    }
 });
